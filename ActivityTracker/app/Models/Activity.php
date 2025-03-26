@@ -18,8 +18,8 @@ class Activity extends Model
     }
 
     // Relationship with ActivityLog
-    public function logs()
+        public function logs()
     {
-        return $this->hasMany(ActivityLog::class);
+        return $this->hasMany(ActivityLog::class, 'activity_id');
     }
 }

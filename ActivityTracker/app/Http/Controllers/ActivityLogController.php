@@ -13,4 +13,5 @@ class ActivityLogController extends Controller
         $logs = ActivityLog::with(['activity', 'user'])->get();
         return response()->json($logs);
     }
+    
 }

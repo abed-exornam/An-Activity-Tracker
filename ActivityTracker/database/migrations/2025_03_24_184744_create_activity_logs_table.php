@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('activity_logs', function (Blueprint $table) {
         $table->id();
         $table->foreignId('activity_id')->constrained()->onDelete('cascade'); // Activity being logged
-        $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Who updated the activity
+        $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
         $table->string('action'); // Action taken (e.g., "Marked as Done")
         $table->text('remark')->nullable(); // Optional remark
         $table->timestamps(); // Created_at & Updated_at
