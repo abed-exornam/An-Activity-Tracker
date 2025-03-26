@@ -8,7 +8,7 @@
     <!-- Search, View Today's Activities, and Report Button in Same Row -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <form action="{{ route('activities.search') }}" method="GET" class="d-flex">
-            <input type="text" name="query" class="form-control form-control-sm me-2" placeholder="Search activities..." required>
+            <input type="text" name="query" class="form-control form-control-sm me-2" placeholder="Search by name or status..." required>
             <button type="submit" class="btn btn-outline-dark btn-sm">Search</button>
         </form>
         <a href="{{ route('activities.daily') }}" class="btn btn-outline-dark btn-sm">View Today's Activities</a>
