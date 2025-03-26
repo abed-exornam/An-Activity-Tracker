@@ -9,7 +9,7 @@ class Activity extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'status', 'user_id'];
+    protected $fillable = ['name', 'sms_count', 'log_sms_count', 'status', 'remark'];
 
     // Relationship with User
     public function user()

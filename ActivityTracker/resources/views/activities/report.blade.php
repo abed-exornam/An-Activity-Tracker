@@ -1,14 +1,14 @@
-<!-- resources/views/activities/report.blade.php -->
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+<div class="container mt-5">
+    @if(isset($activitiesReport))
+        <h3 class="text-center text-dark fw-bold">Activity Report</h3>
+        <p class="text-center text-muted">From {{ $startDate }} to {{ $endDate }}</p>
 
-        <!-- Display filtered activities -->
-        @if(isset($activitiesReport))
-            <h3>Activity Report from {{ $startDate }} to {{ $endDate }}</h3>
-            <table class="table mt-3">
-                <thead>
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered table-striped shadow-sm">
+                <thead class="bg-dark text-white">
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
@@ -23,14 +23,21 @@
                         <tr>
                             <td>{{ $activity->id }}</td>
                             <td>{{ $activity->name }}</td>
-                            <td>{{ $activity->status }}</td>
+                            <td>
+                                <span class="badge bg-{{ $activity->status == 'done' ? 'success' : 'danger' }}">
+                                    {{ ucfirst($activity->status) }}
+                                </span>
+                            </td>
                             <td>{{ $activity->user->name ?? 'Unknown' }}</td>
-                            <td>{{ $activity->remark }}</td>
+                            <td>{{ $activity->remark ?? 'No remarks' }}</td>
                             <td>{{ $activity->updated_at }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-        @endif
-    </div>
+        </div>
+    @else
+        <p class="text-center text-muted">No report available for the selected date range.</p>
+    @endif
+</div>
 @endsection

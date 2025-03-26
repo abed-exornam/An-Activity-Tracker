@@ -17,25 +17,33 @@ class ActivityController extends Controller
     }
 
     // Store a new activity
-        public function store(Request $request)
+        public function create()
     {
+        return view('activities.create');
+    }
+
+    public function store(Request $request)
+    {
+        // Validate Input
         $request->validate([
             'name' => 'required|string|max:255',
-            'sms_count' => 'required|integer',
-            'log_sms_count' => 'required|integer',
-            'remark' => 'nullable|string',  // Add validation for remark
+            'sms_count' => 'nullable|integer',
+            'log_sms_count' => 'nullable|integer',
+            'status' => 'nullable|string|in:pending,done',
+            'remark' => 'nullable|string',
         ]);
 
+        // Save to Database
         Activity::create([
             'name' => $request->name,
             'sms_count' => $request->sms_count,
             'log_sms_count' => $request->log_sms_count,
-            'user_id' => Auth::id(),
-            'status' => 'pending',  // Default status can be pending
-            'remark' => $request->remark, // Store remark if provided
+            'status' => $request->status ?? 'pending',
+            'remark' => $request->remark,
         ]);
 
-        return redirect()->route('activities.index')->with('success', 'Activity created successfully!');
+        // Redirect to activities list with success message
+        return redirect()->route('activities.index')->with('success', 'Activity added successfully!');
     }
 
 
@@ -52,45 +60,43 @@ class ActivityController extends Controller
     }
 
     // Update an activity
-    public function update(Request $request, $id)
+        public function update(Request $request, $id)
     {
         $activity = Activity::findOrFail($id);
-    
-        // Validate the request
+
+        // Validate Input (optional: remove 'required' to allow optional fields)
         $request->validate([
-            'status' => 'required|in:pending,done',
-            'remark' => 'nullable|string',  // Validation for remark
+            'name' => 'required|string|max:255',
+            'sms_count' => 'nullable|integer',
+            'log_sms_count' => 'nullable|integer',
+            'status' => 'nullable|string|in:pending,done',
+            'remark' => 'nullable|string',
         ]);
-    
-        // Update the activity status and remark
-        $activity->status = $request->status;
-        $activity->remark = $request->remark; // Update the remark field
-        $activity->save();
-    
-        // Optionally log the activity update (if you have logging enabled)
-        ActivityLog::create([
-            'activity_id' => $activity->id,
-            'user_id' => auth()->id(),
-            'action' => 'Updated activity status',
-            'remark' => 'Status updated to ' . $request->status,
+
+        // Update Activity
+        $activity->update([
+            'name' => $request->name,
+            'sms_count' => $request->sms_count,
+            'log_sms_count' => $request->log_sms_count,
+            'status' => $request->status,
+            'remark' => $request->remark,
         ]);
-    
-        return redirect()->back()->with('success', 'Activity status and remark updated successfully!');
+
+        // Redirect back to activities list
+        return redirect()->route('activities.index')->with('success', 'Activity updated successfully!');
     }
+
     
-
-
     // Delete an activity
-    public function destroy($id)
+        public function destroy($id)
     {
-        $activity = Activity::find($id);
-        if (!$activity) {
-            return response()->json(['error' => 'Activity not found'], 404);
-        }
+        $activity = Activity::findOrFail($id);
         $activity->delete();
 
-        return response()->json(['message' => 'Activity deleted']);
+        return redirect()->route('activities.index')->with('success', 'Activity deleted successfully.');
     }
+
+
 
     // Show today's activities
     // Show today's activities
@@ -148,7 +154,21 @@ class ActivityController extends Controller
         return view('activities.report', compact('activitiesReport', 'startDate', 'endDate'));
     }
 
+        public function search(Request $request)
+    {
+        $query = $request->input('query');
 
-    
+        $activities = Activity::whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($query) . '%'])
+            ->orWhereRaw('LOWER(status) LIKE ?', ['%' . strtolower($query) . '%'])
+            ->get();
+
+        return view('activities.activities', compact('activities'));
+    }
+
+        public function edit($id)
+    {
+        $activity = Activity::findOrFail($id);
+        return view('activities.edit', compact('activity'));
+    }
 
 }

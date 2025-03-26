@@ -22,7 +22,8 @@ Auth::routes();
 // Route for home page after login
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// Route for activities using ActivityController
+Route::middleware(['auth'])->group(function () {
+    // Route for activities using ActivityController
 Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
 
 // Report generation route
@@ -34,5 +35,16 @@ Route::put('/activities/{id}', [ActivityController::class, 'update'])->name('act
 Route::post('/activities', [ActivityController::class, 'store'])->name('activities.store');
 
 Route::get('/daily-activities', [ActivityController::class, 'dailyActivities'])->name('activities.daily');
+
+Route::get('/activities/search', [ActivityController::class, 'search'])->name('activities.search');
+
+Route::get('/activities/{id}/edit', [ActivityController::class, 'edit'])->name('activities.edit');
+
+Route::get('/activities/create', [ActivityController::class, 'create'])->name('activities.create');
+
+Route::delete('/activities/{id}', [ActivityController::class, 'destroy'])->name('activities.destroy');
+
+});
+
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

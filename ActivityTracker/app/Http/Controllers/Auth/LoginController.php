@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -37,4 +41,12 @@ class LoginController extends Controller
         // No need for this line since the AuthenticatesUsers trait already handles middleware
         // $this->middleware('guest');
     }
+    public function authenticated(Request $request, $user)
+{
+    // Remove other sessions for this user except the current one
+    DB::table('sessions')
+        ->where('user_id', $user->id)
+        ->where('id', '!=', session()->getId())
+        ->delete();
+}
 }
