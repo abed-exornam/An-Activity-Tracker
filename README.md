@@ -17,7 +17,7 @@ This is a Laravel-based web application designed to track and manage the daily a
 
 ```bash
 git clone https://github.com/abed-exornam/An-Activity-Tracker.git
-cd "Assignment Laravel"
+cd "ActivityTracker"
 ```
 
 ### 2️⃣ Install Dependencies  
@@ -76,7 +76,7 @@ npm install
 ## 📂 Project Structure  
 
 ```
-Assignment Laravel
+ActivityTracker
 │── app/
 │   ├── Http/
 │   │   ├── Controllers/
