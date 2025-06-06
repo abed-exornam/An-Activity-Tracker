@@ -19,7 +19,10 @@
             </style>
         @endif
     </head>
-    <body style="background-image: url('{{ asset('images/bg_image.png') }}'); background-size: cover; background-repeat: no-repeat; overflow: hidden;"class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
+    <body style="background-image: url('{{ asset('images/bg_image.png') }}'); background-size: cover; background-repeat: no-repeat; overflow: hidden;">
+    <div  style="background-color: rgba(62, 62, 58, 0.7) ;"
+        class="flex flex-direction-row justify-between bg-black ">
+        <div style="padding: 5px;"class="flex items-center p-4 px-5" >
         <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
             @if (Route::has('login'))
                 <nav class="flex items-center justify-end gap-4">
@@ -49,9 +52,13 @@
                 </nav>
             @endif
         </header>
-        <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
         </div>
-
+    </div>    
+        <div  style="background-color: rgba(62, 62, 58, 0.7);" class="flex justify-center items-center min-h-screen ">
+            <div>
+                <img src="{{ asset('images/logoo.png')}}" alt="Welcome Text" class="h-56 w-auto">
+            </div>
+        </div> 
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
         @endif
